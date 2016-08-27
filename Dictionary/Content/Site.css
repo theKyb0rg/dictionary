@@ -1,0 +1,106 @@
+﻿@font-face {
+    font-family: mutantacademy;
+    src: url(fonts/MutantAcademyBB.ttf);
+}
+
+@font-face {
+    font-family: magnificent;
+    src: url(fonts/Magnificent.ttf);
+}
+
+h1 {
+    font-family: mutantacademy;
+    font-size: 5em;
+    text-shadow: 2px 2px 2px #333;
+}
+
+.col-centered {
+    margin: 0 auto;
+    float: none;
+}
+
+
+h3, body, .text-success, .text-danger, h4 {
+    font-family: magnificent;
+}
+
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body {
+    font-weight: 200;
+    background-color: #fff;
+    background-image: linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), linear-gradient(#eee .1em, transparent .1em);
+    background-size: 100% 1.2em;
+}
+
+#search-term {
+    font-size: 1.5em;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.text-success, .text-danger {
+    font-size: 1.5em;
+}
+
+#search, #clear, h4 {
+    font-size: 1.2em;
+}
+
+h3, body {
+    font-size: 2em;
+}
+
+#title, #subtitle, #search-term, #buttons {
+    opacity: 0;
+}
+
+@media(max-width:1336px) {
+    .container {
+        width: 75%;
+    }
+}
+
+
+@media(max-width:767px) {
+    h1 {
+        font-size: 3em;
+    }
+
+    #search-term {
+        font-size: 1em;
+    }
+
+    #buttons {
+        font-size: 0.8em;
+    }
+
+    body {
+        background-image: linear-gradient(#eee .1em, transparent .1em);
+    }
+}
+
+@media(max-width:320px){
+    h1{
+        font-size: 2.5em;
+    }
+     #search-term {
+        font-size: 0.8em;
+    }
+    
+}

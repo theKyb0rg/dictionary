@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="row">
+    <div id="main" class="col-xs-12 col-centered text-center">
+        <h1 id="title">It's The Fuckin' Dictionary</h1>
+        <p id="subtitle">So you don't know what the fuck a word means eh?</p>
+        <input id="search-term" class="form-control text-center" style="margin-top:20px;" type="text" placeholder="Look up the fuckin' word..." />
+        <div id="buttons" class="btn-group btn-group-lg text-center" style="margin-top: 20px;">
+            <button class="btn btn-default" id="search">Search</button>
+            <button class="btn btn-default" id="clear">Clear</button>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div id="search-results"></div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#title").animate({ opacity: 1 }, 500, function () {
+                $("#subtitle").animate({ opacity: 1 }, 500, function () {
+                    $("#search-term").animate({ opacity: 1 }, 500, function () {
+                        $("#buttons").animate({ opacity: 1 });
+                    });
+                });
+            });
+
+            $("#clear").click(function () {
+                $("#search-results").empty();
+                $("#search-term").val("");
+            });
+
+            $("#search").click(function () {
+                var searchTerm = $("#search-term").val();
+                $("#search-results").empty();
+
+                if (searchTerm.length < 1) {
+                    $("#search-results").append("<br/><h4 class='text-center text-danger'>You done fucked up. Try again.</h4>");
+                }
+                else {
+                    $("#search-results").append("<br/><h4 class='text-center'>Hold on. We're looking your fuckin' word.</h4>");
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("Search")',
+                        data: {
+                            'searchTerm': searchTerm,
+                        },
+                        cache: false,
+                        success: function (json) {
+                            // empty the div
+                            $("#search-results").empty();
+
+                            if (json != "-1") {
+                                // parse the json
+                                var data = JSON.parse(json);
+
+                                // provide link to original site
+                                $("#search-results").append("<br/><div class='text-center'><h4 class='text-success'>Definition found.</h4><a href='" + data[0].url + "' target='_blank'>Don't believe me? See for yourself.</a></div>");
+
+                                // counter for determining
+                                var count = 1;
+
+
+                                // add only verbs, nouns and adjectives to avoid having to ultra parse everything
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].category == "noun" || data[i].category == "verb" || data[i].category == "adjective") {
+                                        if (i == 0) {
+                                            $("#search-results").append("<h3>" + data[i].category + "</h3>");
+                                        }
+                                        else if (data[i - 1].category != data[i].category) {
+                                            $("#search-results").append("<h3>" + data[i].category + "</h3>");
+                                        }
+                                        $("#search-results").append("<p>" + "<b>" + count + "</b>" + ". " + data[i].value.replace("fucking'", "<b>fucking'</b>") + "</p>");
+                                        count++;
+                                    }
+                                }
+                            }
+                            else {
+                                $("#search-results").append("<br/><h4 class='text-center text-danger'>You done fucked up. Try again.</h4>");
+                            }
+                        },
+                        error: function (xhr) {
+                            $("#search-results").empty();
+                            $("#search-results").append("<br/><h4 class='text-center text-danger'>You done fucked up. Try again.</h4>");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
